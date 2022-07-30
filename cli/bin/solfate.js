@@ -8,8 +8,8 @@ const program = new Command();
 */
 program
   .name("solfate")
-  .description("Developer tool for building Solana programs")
-  .version("0.1.0");
+  .description("Developer tool for building Solana programs");
+// .version("0.1.0"); // TODO: auto load from package.json?
 
 /*
     Add each of the commands to the CLI program

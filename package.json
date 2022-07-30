@@ -1,0 +1,29 @@
+{
+  "homepage": "https://solfate.com/",
+  "author": {
+    "name": "Nick Frostbutter",
+    "url": "https://github.com/nickfrosty"
+  },
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/solfate/"
+  },
+  "description": "Developer utilities and tooling for the Solana ecosystem",
+  "keywords": [
+    "solfate",
+    "solana",
+    "cli",
+    "rust",
+    "anchor",
+    "blockchain",
+    "react",
+    "web3",
+    "restart"
+  ],
+  "license": "MIT",
+  "scripts": {
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.24.1"
+  }
+}
