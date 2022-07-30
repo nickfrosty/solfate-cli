@@ -1,51 +1,50 @@
 {
-	"name": "solfate",
-	"version": "0.1.0",
-	"homepage": "https://solfate.com/cli",
-	"author": {
-		"name": "Nick Frostbutter",
-		"url": "https://github.com/nickfrosty"
-	},
-	"main": "./lib/solfate",
-	"bin": {
-		"solfate": "./bin/solfate.js"
-	},
-	"engines": {
-		"node": ">=8.10.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/solfate/solfate.git"
-	},
-	"description": "",
-	"keywords": [
-		"solfate",
-		"solana",
-		"cli",
-		"rust",
-		"anchor",
-		"blockchain",
-		"monitor",
-		"development",
-		"restart",
-		"autoload",
-		"hot",
-		"watch",
-		"reload",
-		"terminal"
-	],
-	"license": "MIT",
-	"scripts": {
-		"postinstall": "node bin/postinstall || exit 0"
-	},
-	"devDependencies": {},
-	"dependencies": {
-		"chalk": "4.1.2",
-		"chokidar": "^3.5.2",
-		"commander": "^9.4.0",
-		"debug": "^3.2.7",
-		"ignore-by-default": "^1.0.1",
-		"minimatch": "^3.1.2",
-		"shelljs": "^0.8.5"
-	}
+  "name": "solfate",
+  "version": "0.1.0",
+  "homepage": "https://solfate.com/cli",
+  "author": {
+    "name": "Nick Frostbutter",
+    "url": "https://github.com/nickfrosty"
+  },
+  "main": "./lib/solfate",
+  "bin": {
+    "solfate": "./bin/solfate.js"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/solfate/solfate.git"
+  },
+  "description": "",
+  "keywords": [
+    "solfate",
+    "solana",
+    "cli",
+    "rust",
+    "anchor",
+    "blockchain",
+    "monitor",
+    "development",
+    "restart",
+    "autoload",
+    "hot",
+    "watch",
+    "reload",
+    "terminal"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "node bin/postinstall || exit 0"
+  },
+  "dependencies": {
+    "chalk": "4.1.2",
+    "chokidar": "^3.5.2",
+    "commander": "^9.4.0",
+    "debug": "^3.2.7",
+    "ignore-by-default": "^1.0.1",
+    "minimatch": "^3.1.2",
+    "shelljs": "^0.8.5"
+  }
 }
