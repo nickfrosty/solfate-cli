@@ -1,10 +1,11 @@
 {
-  "name": "solfate",
+  "name": "@solfate/labs",
   "homepage": "https://solfate.com/",
   "author": {
     "name": "Nick Frostbutter",
     "url": "https://github.com/nickfrosty"
   },
+  "workspaces":["cli"],
   "repository": {
     "type": "github",
     "url": "https://github.com/solfate/"
