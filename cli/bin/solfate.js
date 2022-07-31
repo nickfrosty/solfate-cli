@@ -21,6 +21,8 @@ program
 
 program.addCommand(require("../lib/commands/hot"));
 
+program.addCommand(require("../lib/commands/set"));
+
 /*
 	Start accepting commands for the CLI
 */
