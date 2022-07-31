@@ -13,7 +13,7 @@ const command = new Command("set")
   .argument("[network]", `name of the network personality to set`)
   .option("-url, --endpoint", "Solana RPC endpoint URL")
   .option("-k, --keypair", "file path to the wallet keypair file")
-  .option("-C, --file", "file path to the Solana config file")
+  .option("-f, --file", "file path to the Solana config file")
   .option("-c, --commitment", "Solana network commitment level")
   .option(
     "-w, --ws",
