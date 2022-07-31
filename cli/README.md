@@ -3,13 +3,15 @@
 Developer utility for building Solana programs
 
 Learn more: [https://solfate.com/cli](https://solfate.com/cli)
+Github: [https://github.com/solfate/solfate](https://github.com/solfate/solfate/tree/master/cli)
+NPM Repository: [https://npmjs.com/package/solfate](https://www.npmjs.com/package/solfate)
 
 ## Setup and Install
 
 Install the Solfate CLI from the NPM package registry:
 
 ```sh
-npx i -g solfate
+npm i -g solfate
 ```
 
 ### Prerequisites
@@ -24,7 +26,7 @@ The Solfate CLI requires the following tools/programs to already be installed:
 
 The Solfate CLI supports loading a user define `solfate.config.js` file from inside your project's repo/working directory.
 
-An example config file can be located here in this repo: [solfate.config.js](./solfate.config.js)
+An example config file can be located here in this repo: [solfate.config.js](https://github.com/solfate/solfate/blob/master/cli/solfate.config.js)
 
 ### Locating the config file
 
