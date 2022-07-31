@@ -4,6 +4,31 @@
 
 const fs = require("fs");
 const path = require("path");
+const log = require("./log");
+
+/**
+ * Resolve and load the `solfate.config.js` file from the local directory tree or project
+ * @returns `object` of the user user defined configs, or an empty `object` on any error
+ */
+const loadSolfateConfig = () => {
+  const FILE_NAME = "solfate.config.js";
+
+  // attempt the resolve the config file in the local project structure
+  const filePath = resolveNearestFile(FILE_NAME, false);
+  if (!filePath) throw Error("file not found");
+
+  // attempt to load the config file
+  try {
+    const SolfateConfig = require(filePath);
+    if (typeof SolfateConfig === "object") return SolfateConfig;
+  } catch (err) {
+    // do nothing
+    log.warn(`Invalid solfate config file: ${filePath}`);
+  }
+
+  // always returns an object, even when errors occur
+  return {};
+};
 
 /**
  *
@@ -11,10 +36,14 @@ const path = require("path");
  * @returns {boolean} `false` when unsuccessful, or
  * @returns {string} the string contents of the file
  */
-const loadFile = (filePath) => {
-  filePath = path.resolve(filePath);
-  if (fs.existsSync(filePath)) return fs.readFileSync(filePath, "utf-8");
-  else return false;
+const openFile = filePath => {
+  try {
+    filePath = path.resolve(filePath);
+    if (fs.existsSync(filePath)) return fs.readFileSync(filePath, "utf-8");
+  } catch (err) {
+    // do nothing
+  }
+  return false;
 };
 
 /**
@@ -26,9 +55,8 @@ const loadFile = (filePath) => {
  * @returns {boolean} `false` when unsuccessful, or
  * @returns {various} the parsed file contents determined by the `type`
  */
-const loadAndParseFile = (filePath, type = null) => {
-  let file = loadFile(filePath);
-
+const openAndParseFile = (filePath, type = null) => {
+  let file = openFile(filePath);
   if (!file) return false;
 
   // establish an auto-parsing mechanism, when type is not specified
@@ -46,7 +74,7 @@ const loadAndParseFile = (filePath, type = null) => {
   switch (type) {
     case "lines":
       file = file.split("\n");
-      file = file.filter((line) => line && line);
+      file = file.filter(line => line && line);
       break;
     case "json":
       file = JSON.parse(file);
@@ -59,61 +87,48 @@ const loadAndParseFile = (filePath, type = null) => {
   return file;
 };
 
-// WIP for the future
-const locateNearestFileByName = (name, caseSensitive = false) => {
+/**
+ * Determine the nearest absolute path of the given file/folder name
+ * @param {string} name file or folder name to locate
+ * @param {boolean} caseSensitive
+ * @returns `string` of the resolved path to the provided `name` or `false` when not found
+ */
+const resolveNearestFile = (name, caseSensitive = false) => {
   if (!name) return false;
   if (!caseSensitive) name = name.toLowerCase();
 
-  const baseDir = ".";
-  const stack = [];
+  // set a max crawl depth to prevent searching the whole OS
+  // NOTE: 5 should be enough to cover being in any directory, even in a mono repo
+  const MAX_CRAWL_DEPTH = 5;
 
-  let nearest = false;
+  let current_depth = 0;
+  let cwd = process.cwd();
+  let foundPath = false;
 
-  let cwd = baseDir;
-
-  // while (!nearest){
-
-  // }
-
-  const listing = fs.readdirSync(path.resolve(baseDir), {
-    withFileTypes: true,
-  });
-
-  console.log(listing);
-
-  // crawl the search directory for more files
-  for (let i = 0; i < listing.length; i++) {
-    const pointer = path.join(baseDir, listing[i]?.name);
-    // console.log(pointer);
-
-    // recursively crawl child directories
-    if (listing[i].isDirectory()) stack.push(pointer);
-    // files.push(...crawlForFiles(pointer, autoParseFile));
-    else if (listing[i].isFile()) {
-      // lower case the file name when needed
-      if (!caseSensitive)
-        listing[i] = listing[i]?.name?.toLowerCase() || listing[i];
-
-      console.log(listing[i]);
-      // TODO: add checking to only search for the given file extensions
-
-      // when desired, ready and parse the files contents
-      // if (autoParseFile) {
-      // 	const item = parseFile(pointer);
-
-      // 	// add the files parsed 'item' to the array (but NOT drafts unless explictly wanted)
-      // 	if (drafts === true || item?.meta?.draft !== false)
-      // 		files.push(item);
-      // } else
-      // files.push(pointer);
+  // begin crawling for the `name`
+  while (!foundPath && current_depth <= MAX_CRAWL_DEPTH) {
+    try {
+      if (fs.existsSync(path.resolve(cwd, name)))
+        foundPath = path.resolve(cwd, name);
+    } catch (err) {
+      // no nothing
     }
+
+    // when the current dir has a `.git` directory,
+    // consider that the project root and stop searching
+    if (fs.existsSync(path.resolve(cwd, ".git/"))) return false;
+
+    // update the crawl counter and move up one directory level
+    current_depth++;
+    cwd = path.resolve(cwd, "..");
   }
 
-  return name;
+  return foundPath;
 };
 
 module.exports = {
-  loadFile,
-  loadAndParseFile,
-  locateNearestFileByName,
+  openFile,
+  openAndParseFile,
+  resolveNearestFile,
+  loadSolfateConfig,
 };

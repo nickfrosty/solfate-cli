@@ -4,6 +4,7 @@
 
 const { which, echo, exec, exit } = require("shelljs");
 const log = require("../utils/log");
+const { loadSolfateConfig } = require("../utils/");
 
 const SOLANA_CMD = "solana";
 
@@ -103,18 +104,24 @@ const setConfig = config => {
   const BASE_COMMAND = `${SOLANA_CMD} config set`;
   let command = BASE_COMMAND;
 
-  // accept the name of a network personality
+  // accept the `name` of a network personality
   if (typeof config === "string") {
+    // load the default config
+    const defaultConfig = SOLANA_NETWORKS[config.toLowerCase()] || false;
+
+    // attempt to load and distill the local solfate config file
+    let SolfateConfig = loadSolfateConfig()?.networks;
+    if (typeof SolfateConfig === "object")
+      SolfateConfig = SolfateConfig[config.toLowerCase()] || false;
+
     // ensure the provided network name was found
-    if (!SOLANA_NETWORKS[config.toLowerCase()])
+    if (!(SolfateConfig || defaultConfig))
       return log.error(`Unable to find network personality named "${config}"`);
 
-    // construct a `config` object based on the provided network name
+    // construct a `config` object based on the provided personality name
     config = {
-      ...SOLANA_NETWORKS[config.toLowerCase()],
-
-      // TODO: load a Solfate config file that will enable over-writing
-      // the defaults (and set memorable settings)
+      ...defaultConfig,
+      ...SolfateConfig,
     };
   }
 

@@ -48,7 +48,7 @@ const command = new Command("hot")
 
     // let ignored = "";
     // construct the file watcher's ignore list (from the `.gitignore`)
-    // const gitignore = loadAndParseFile(".gitignore");
+    // const gitignore = openAndParseFile(".gitignore");
     // if (gitignore) ignored = new RegExp(gitignore);
     // else
 
