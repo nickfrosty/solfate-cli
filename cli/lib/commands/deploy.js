@@ -7,7 +7,7 @@ const { Command } = require("commander");
 // import local libs
 const solana = require("../solana");
 
-const deploy = new Command("deploy")
+const command = new Command("deploy")
   .description("deploy a Solana/Anchor program")
   .argument("[program]", "root of the Solana program directory")
   .option("-m, --mainnet", "deploy to the 'mainnet' network")
@@ -19,4 +19,4 @@ const deploy = new Command("deploy")
     console.log("options", options);
   });
 
-module.exports = deploy;
+module.exports = command;

@@ -14,11 +14,11 @@ const log = require("../utils/log");
 
 const DEFAULT_PROGRAM_DIR = "./program";
 
-const hot = new Command("hot")
+const command = new Command("hot")
   .description("auto rebuild your Solana program")
   .argument(
     "[program directory]",
-    `relative path of the root of the Solana program; default="${DEFAULT_PROGRAM_DIR}"`
+    `relative path of the root of the Solana program; default="${DEFAULT_PROGRAM_DIR}"`,
   )
   // .option("--deploy", "enable auto deployments") // future idea :)
   .action((progDir, options) => {
@@ -75,9 +75,9 @@ const hot = new Command("hot")
 
     // create the event listeners to listen for desired file changes
     watcher
-      .on("add", (path) => builder())
-      .on("change", (path) => builder())
-      .on("unlink", (path) => builder())
+      .on("add", path => builder())
+      .on("change", path => builder())
+      .on("unlink", path => builder())
       .on("ready", () => {
         // run the initial build
         const first = builder();
@@ -87,4 +87,4 @@ const hot = new Command("hot")
       });
   });
 
-module.exports = hot;
+module.exports = command;
