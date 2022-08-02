@@ -1,5 +1,11 @@
 # solfate
 
+## 0.2.1
+
+### Patch Changes
+
+- fixed error that was preventing the CLI from running when no config file was located
+
 ## 0.2.0
 
 ### Minor Changes
