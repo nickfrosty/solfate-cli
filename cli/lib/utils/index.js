@@ -15,15 +15,19 @@ const loadSolfateConfig = () => {
 
   // attempt the resolve the config file in the local project structure
   const filePath = resolveNearestFile(FILE_NAME, false);
-  if (!filePath) throw Error("file not found");
-
-  // attempt to load the config file
-  try {
-    const SolfateConfig = require(filePath);
-    if (typeof SolfateConfig === "object") return SolfateConfig;
-  } catch (err) {
-    // do nothing
-    log.warn(`Invalid solfate config file: ${filePath}`);
+  if (filePath) {
+    // attempt to load the config file
+    try {
+      const SolfateConfig = require(filePath);
+      if (typeof SolfateConfig === "object") return SolfateConfig;
+    } catch (err) {
+      log.warn(`Invalid solfate config file: ${filePath}`);
+    }
+  } else {
+    // THOUGHTS: should not having a config file located log a message to the user?
+    // I can't decided. For now, it shall not...
+    // log.warn("No solfate config file located");
+    // throw Error("file not found");
   }
 
   // always returns an object, even when errors occur
@@ -110,13 +114,13 @@ const resolveNearestFile = (name, caseSensitive = false) => {
     try {
       if (fs.existsSync(path.resolve(cwd, name)))
         foundPath = path.resolve(cwd, name);
+
+      // when the current dir has a `.git` directory,
+      // consider that the project root and stop searching
+      if (fs.existsSync(path.resolve(cwd, ".git/"))) return false;
     } catch (err) {
       // no nothing
     }
-
-    // when the current dir has a `.git` directory,
-    // consider that the project root and stop searching
-    if (fs.existsSync(path.resolve(cwd, ".git/"))) return false;
 
     // update the crawl counter and move up one directory level
     current_depth++;
