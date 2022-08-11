@@ -1,5 +1,11 @@
 # solfate
 
+## 0.3.1
+
+### Patch Changes
+
+- updated README doc for instructions on using the command and options
+
 ## 0.3.0
 
 ### Minor Changes
