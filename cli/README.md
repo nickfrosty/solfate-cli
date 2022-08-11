@@ -50,11 +50,11 @@ Hot reload (aka auto rebuild) a Solana program on every file change to the progr
 
 Default: `./program` - resolved to the current working directory
 
-#### Arguments
+#### Options
 
 `-d` _(optional)_ - (localnet only) auto deploy the program after each successful build
 
-> > > NOTE: When auto deploys are enabled, the CLI will also request periodic SOL airdrops to keep your balance high enough to continue to deploy your program.
+**NOTE:** When auto deploys are enabled, the CLI will also request periodic SOL airdrops to keep your balance high enough to continue to deploy your program.
 
 ### `set` :: set Solana network settings
 
@@ -82,7 +82,7 @@ Set Solana CLI network settings, either by a network "personality" name or indiv
 
 ### `build` :: build Solana program
 
-Locally buld your Solana program
+Locally build your Solana program
 
 `solfate build [path]`
 
