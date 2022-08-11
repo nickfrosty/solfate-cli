@@ -2,9 +2,9 @@
 
 Developer utility for building Solana programs
 
-Learn more: [https://solfate.com/cli](https://solfate.com/cli)
-Github: [https://github.com/solfate/solfate](https://github.com/solfate/solfate/tree/master/cli)
-NPM Repository: [https://npmjs.com/package/solfate](https://www.npmjs.com/package/solfate)
+- Learn more: [https://solfate.com/cli](https://solfate.com/cli)
+- Github: [https://github.com/solfate/solfate](https://github.com/solfate/solfate/tree/master/cli)
+- NPM Repository: [https://npmjs.com/package/solfate](https://www.npmjs.com/package/solfate)
 
 ## Setup and Install
 
@@ -44,11 +44,17 @@ Hot reload (aka auto rebuild) a Solana program on every file change to the progr
 
 `solfate hot [path]`
 
-#### Arguments and
+#### Arguments
 
 `path` _(optional)_ - relative or absolute path to the root of the Solana program
 
 Default: `./program` - resolved to the current working directory
+
+#### Arguments
+
+`-d` _(optional)_ - (localnet only) auto deploy the program after each successful build
+
+> > > NOTE: When auto deploys are enabled, the CLI will also request periodic SOL airdrops to keep your balance high enough to continue to deploy your program.
 
 ### `set` :: set Solana network settings
 
@@ -58,9 +64,11 @@ Set Solana CLI network settings, either by a network "personality" name or indiv
 
 > NOTE: Either a network personality name, or at least one individual setting `option` is required to use `set`
 
-#### Arguments and Options
+#### Arguments
 
 `network` _(optional)_ - name of the network "personality" to set as your Solana config settings
+
+#### Options
 
 `--endpoint` - Solana RPC endpoint URL
 
@@ -71,3 +79,21 @@ Set Solana CLI network settings, either by a network "personality" name or indiv
 `--commitment` - Solana network commitment level
 
 `--ws` - websocket URL for the Solana cluster (usually auto computed when updating the endpoint
+
+### `build` :: build Solana program
+
+Locally buld your Solana program
+
+`solfate build [path]`
+
+#### Arguments
+
+`path` _(optional)_ - relative or absolute path to the root of the Solana program
+
+Default: `./program` - resolved to the current working directory
+
+#### Arguments
+
+`-d` _(optional)_ - after a successful build, auto deploy the program to the current selected network cluster
+
+> > > NOTE: When auto deploys are enabled, the CLI will request SOL airdrop to keep your balance high enough to continue to deploy your program.

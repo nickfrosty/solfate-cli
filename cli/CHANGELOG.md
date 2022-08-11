@@ -1,5 +1,14 @@
 # solfate
 
+## 0.3.0
+
+### Minor Changes
+
+- - new `build` command - enables building Solana programs locally
+    - with an optional `-d` option to auto deploy after a successful build
+  - added auto deploy option to the `hot` rebuilds (on localnet only)
+  - minor bug fix in `hot` builds
+
 ## 0.2.1
 
 ### Patch Changes
