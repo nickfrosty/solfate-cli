@@ -20,7 +20,10 @@ const command = new Command("hot")
     "[program directory]",
     `relative path of the root of the Solana program; default="${DEFAULT_PROGRAM_DIR}"`,
   )
-  // .option("--deploy", "enable auto deployments") // future idea :)
+  .option(
+    "-d, --deploy",
+    "enable auto deployments (only using the local test validator)",
+  )
   .action((progDir, options) => {
     // set the default program directory to search for
     progDir = path.resolve(progDir ? progDir : DEFAULT_PROGRAM_DIR);
@@ -46,30 +49,36 @@ const command = new Command("hot")
 
     log.info(`Program directory: ${progDir}`);
 
-    // let ignored = "";
-    // construct the file watcher's ignore list (from the `.gitignore`)
-    // const gitignore = openAndParseFile(".gitignore");
-    // if (gitignore) ignored = new RegExp(gitignore);
-    // else
-
-    // ignored = ["", "node_modules", ".dist"];
-    // ignored.push(/.*\.(?!rs$|toml$)[^.]+/);
-    // generate a regex of the files to be ignored
-    // ignored = new RegExp(ignored);
-    // ignored = new RegExp(/(^(|[\/\\])\..)|node_modules/);
-    // create a regext to ignore NOT (*.rs, *.toml, etc) for Solana program files
-    // ignored = new RegExp(/.*\.(?!rs$|toml$)[^.]+/);
-    // log.info(ignored);
-
-    // construct a builder action for the listener
+    // construct a builder action for the filesystem listener
     const builder = () => {
-      return rust.build(progDir);
+      const deploySettings = rust.build(progDir, true);
+
+      if (deploySettings) {
+        // auto deploy the program
+        if (options?.deploy) {
+          if (solana.isLocalnet()) {
+            // auto airdrop when the balance is low
+            solana.airdropOnLowBalance();
+
+            solana.deploy(deploySettings);
+          } else {
+            // TODO: give the user a quick option to switch to the local cluster as their config
+            log.warn("Auto deployments are ONLY allowed using a local cluster");
+          }
+        }
+
+        return true;
+      } else {
+        log.error("--------------------------------------");
+        log.error("Update and save changes to rebuild");
+        log.error("--------------------------------------");
+        return false;
+      }
     };
 
-    // create the file watcher
+    // create the filesystem watcher for the program directory
     const watcher = chokidar.watch(progDir, {
       ignoreInitial: true,
-      ignored: ignored,
       persistent: true,
     });
 
@@ -83,7 +92,7 @@ const command = new Command("hot")
         const first = builder();
 
         if (first) log.notice("Listening for changes...");
-        else log.notice("Well your initial build failed...");
+        else log.notice("Well, your initial build failed...");
       });
   });
 

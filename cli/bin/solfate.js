@@ -15,7 +15,7 @@ program
     Add each of the commands to the CLI program
 */
 
-// program.addCommand(require("../lib/commands/build"));
+program.addCommand(require("../lib/commands/build"));
 
 // program.addCommand(require("../lib/commands/deploy"));
 

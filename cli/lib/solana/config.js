@@ -37,7 +37,7 @@ const getConfig = (parse = true) => {
     silent: true,
   })?.stdout;
 
-  return parse ? parseConfig(cliOutput) : false;
+  return parse ? parseConfig(cliOutput) : cliOutput;
 };
 
 /**
@@ -47,12 +47,12 @@ const getConfig = (parse = true) => {
  * @returns formatted `object` of the parsed config settings
  * @returns `false` when failing to parse
  */
-const parseConfig = (cliOutput = null) => {
+const parseConfig = (cliOutput = "") => {
   // read in the current solana CLI config settings (when not already provided)
   if (!cliOutput) cliOutput = getConfig(false);
 
   // break the lines of the cli output string
-  cliOutput = cliOutput?.split("\n");
+  cliOutput = cliOutput && cliOutput?.split("\n");
 
   // gracefully fail if the Solana CLI command result was invalid
   if (!cliOutput || !cliOutput?.length)
@@ -147,6 +147,11 @@ const setConfig = config => {
 };
 
 const isLocalnet = () => {
+  const config = parseConfig();
+  if (!config) throw Error("Unable to parse Solana config");
+
+  if (config?.endpoint?.split("//", 2)?.[1]?.startsWith("localhost:"))
+    return true;
   return false;
 };
 
@@ -170,5 +175,3 @@ module.exports = {
   isMainnet,
   isLocalnet,
 };
-
-// module.exports = require("./solfate");
