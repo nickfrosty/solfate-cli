@@ -1,5 +1,6 @@
 {
   "name": "@solfate/labs",
+  "private": "true",
   "homepage": "https://solfate.com/",
   "author": {
     "name": "Nick Frostbutter",
